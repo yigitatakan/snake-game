@@ -94,6 +94,7 @@ class Menu:
         return slider_rect
 
     def ana_menu_goster(self):
+        self.butonlar.clear()  # Butonları temizle
         self.ayarlar.pencere.fill(SIYAH)
         baslik = self.font_buyuk.render("Yılan Oyunu", True, YESIL)
         baslik_rect = baslik.get_rect(center=(self.ayarlar.ayarlar['pencere_genislik']//2, 100))
@@ -104,6 +105,7 @@ class Menu:
         self.buton_ciz("Çıkış", 400)
 
     def ayarlar_menu_goster(self):
+        self.butonlar.clear()  # Butonları temizle
         self.ayarlar.pencere.fill(SIYAH)
         baslik = self.font_buyuk.render("Ayarlar", True, BEYAZ)
         baslik_rect = baslik.get_rect(center=(self.ayarlar.ayarlar['pencere_genislik']//2, 50))
@@ -123,7 +125,8 @@ class Menu:
         self.buton_ciz("Normal", 580, self.ayarlar.ayarlar['zorluk'] == 'normal')
         self.buton_ciz("Zor", 650, self.ayarlar.ayarlar['zorluk'] == 'zor')
 
-        self.buton_ciz("Geri", 720)
+        # Geri butonu her zaman en altta
+        self.buton_ciz("Geri", self.ayarlar.ayarlar['pencere_yukseklik'] - 80)
 
     def menu_dongusu(self):
         while True:
@@ -135,35 +138,35 @@ class Menu:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     pos = pygame.mouse.get_pos()
                     if self.aktif_menu == 'ana_menu':
-                        if self.butonlar["Oyuna Başla"].collidepoint(pos):
+                        if self.butonlar.get("Oyuna Başla") and self.butonlar["Oyuna Başla"].collidepoint(pos):
                             return True
-                        elif self.butonlar["Ayarlar"].collidepoint(pos):
+                        elif self.butonlar.get("Ayarlar") and self.butonlar["Ayarlar"].collidepoint(pos):
                             self.aktif_menu = 'ayarlar'
-                        elif self.butonlar["Çıkış"].collidepoint(pos):
+                        elif self.butonlar.get("Çıkış") and self.butonlar["Çıkış"].collidepoint(pos):
                             pygame.quit()
                             sys.exit()
                     
                     elif self.aktif_menu == 'ayarlar':
-                        if self.butonlar["Geri"].collidepoint(pos):
+                        if self.butonlar.get("Geri") and self.butonlar["Geri"].collidepoint(pos):
                             self.aktif_menu = 'ana_menu'
                             self.ayarlar.ayarlari_kaydet()
-                        elif self.butonlar["800x600"].collidepoint(pos):
+                        elif self.butonlar.get("800x600") and self.butonlar["800x600"].collidepoint(pos):
                             self.ayarlar.ayarlar['pencere_genislik'] = 800
                             self.ayarlar.ayarlar['pencere_yukseklik'] = 600
                             self.ayarlar.guncelle_pencere()
-                        elif self.butonlar["1024x768"].collidepoint(pos):
+                        elif self.butonlar.get("1024x768") and self.butonlar["1024x768"].collidepoint(pos):
                             self.ayarlar.ayarlar['pencere_genislik'] = 1024
                             self.ayarlar.ayarlar['pencere_yukseklik'] = 768
                             self.ayarlar.guncelle_pencere()
-                        elif self.butonlar["1280x720"].collidepoint(pos):
+                        elif self.butonlar.get("1280x720") and self.butonlar["1280x720"].collidepoint(pos):
                             self.ayarlar.ayarlar['pencere_genislik'] = 1280
                             self.ayarlar.ayarlar['pencere_yukseklik'] = 720
                             self.ayarlar.guncelle_pencere()
-                        elif self.butonlar["Kolay"].collidepoint(pos):
+                        elif self.butonlar.get("Kolay") and self.butonlar["Kolay"].collidepoint(pos):
                             self.ayarlar.ayarlar['zorluk'] = 'kolay'
-                        elif self.butonlar["Normal"].collidepoint(pos):
+                        elif self.butonlar.get("Normal") and self.butonlar["Normal"].collidepoint(pos):
                             self.ayarlar.ayarlar['zorluk'] = 'normal'
-                        elif self.butonlar["Zor"].collidepoint(pos):
+                        elif self.butonlar.get("Zor") and self.butonlar["Zor"].collidepoint(pos):
                             self.ayarlar.ayarlar['zorluk'] = 'zor'
 
             if self.aktif_menu == 'ana_menu':
